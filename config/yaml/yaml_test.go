@@ -7,7 +7,7 @@ import (
 	"os"
 	"testing"
 
-	"yaml"
+	"github.com/k4k3ru-hub/go/config/yaml"
 )
 
 

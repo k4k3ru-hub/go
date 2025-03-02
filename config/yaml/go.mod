@@ -1,4 +1,4 @@
-module yaml
+module github.com/k4k3ru-hub/go/config/yaml
 
 go 1.21.6
 
