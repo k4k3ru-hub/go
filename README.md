@@ -1,4 +1,4 @@
-# Go Utilities by k4k3ru-hub
+# Go Utilities
 
 ## Overview
 Welcome to the **Go Utilities** repository.
