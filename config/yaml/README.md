@@ -50,7 +50,7 @@ import "github.com/k4k3ru-hub/go/config/yaml"
 3. Initialize the module
 
 ```go
-if err := err := yaml.Init(); err != nil {
+if err := yaml.Init(); err != nil {
     // Error Handling
 }
 ```
