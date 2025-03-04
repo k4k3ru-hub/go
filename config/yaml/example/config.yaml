@@ -1,0 +1,14 @@
+key1: value1
+key2: true
+key3: 10
+key4: 3.14
+key5:
+- a
+- b
+- c
+key6: 
+- 1
+- 2
+- 3
+key7:
+  key8: value8
