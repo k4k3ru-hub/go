@@ -95,7 +95,11 @@ func (cli *Cli) Run() {
 
 	// If there is no arguments provided, run the root command.
 	if len(args) == 0 {
-		cli.Command.Action(cli.Command.Options)
+		if cli.Command.Action != nil {
+			cli.Command.Action(cli.Command.Options)
+		} else {
+			cli.Command.showUsage()
+		}
 		return
 	}
 
