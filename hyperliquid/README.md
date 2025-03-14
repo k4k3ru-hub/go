@@ -14,6 +14,13 @@ This is a Go library for interacting with Hyperliquid, providing convenient util
 
 ## Installation
 
+### CLI
+
+```
+git clone 
+go build -o build/hyperliquid-cli cli/main.go
+```
+
 ```
 import "github.com/k4k3ru-hub/go/hyperliquid"
 ```
