@@ -98,20 +98,21 @@ func (cli *Cli) Run() {
 		if cli.Command.Action != nil {
 			cli.Command.Action(cli.Command.Options)
 		} else {
-			cli.Command.showUsage()
+			cli.Command.ShowUsage()
 		}
 		return
 	}
 
 	// Check the help flag.
 	if isHelpFlagSet(args) {
-		cli.Command.showUsage()
+		cli.Command.ShowUsage()
 		return
 	}
 
 	// Check the version flag.
 	if isVersionFlagSet(args) {
 		fmt.Printf("Version: %s\n", cli.Version)
+		return
 	}
 	
 
@@ -137,6 +138,42 @@ func (cmd *Command) SetDefaultConfigOption() {
 //
 func (cli *Cli) SetVersion(version string) {
 	cli.Version = version
+}
+
+
+//
+// Show usage of the command.
+//
+func (cmd *Command) ShowUsage() {
+	var usage strings.Builder
+
+	// Usage section
+	usage.WriteString("Usage: " + cmd.Name)
+	for optionName, option := range cmd.Options {
+		if optionName != "" && option.Alias != "" {
+			usage.WriteString(" [--" + optionName + "|-" + option.Alias + "]")
+		} else if optionName != "" {
+			usage.WriteString(" [--" + optionName + "]")
+		} else if option.Alias != "" {
+			usage.WriteString(" [-" + option.Alias + "]")
+		} else {
+			continue
+		}
+	}
+	if len(cmd.Commands) > 0 {
+		usage.WriteString(" [")
+		var commandNames []string
+		for _, command := range cmd.Commands {
+			if command.Name == "" {
+				continue
+			}
+			commandNames = append(commandNames, command.Name)
+		}
+		usage.WriteString(strings.Join(commandNames, "|") + "]")
+	}
+
+
+    fmt.Println(usage.String())
 }
 
 
@@ -207,7 +244,7 @@ func (cmd *Command) run(options map[string]*Option, args []string) {
 			foundOption := getOptionByArgument(arg, cmd.Options)
 			if foundOption == nil {
 				fmt.Printf("Unknown option: %s\n\n", arg)
-				cmd.showUsage()
+				cmd.ShowUsage()
 				return
 			}
 
@@ -250,7 +287,7 @@ func (cmd *Command) run(options map[string]*Option, args []string) {
 
 			// Unsupported sub command.
 			fmt.Printf("Unknown sub command: %s\n\n", arg)
-			cmd.showUsage()
+			cmd.ShowUsage()
 			return
 		}
 	}
@@ -259,43 +296,6 @@ func (cmd *Command) run(options map[string]*Option, args []string) {
 	if cmd.Action != nil {
 		cmd.Action(options)
 	} else {
-		cmd.showUsage()
+		cmd.ShowUsage()
 	}
-}
-
-
-//
-// Show usage of the command.
-//
-func (cmd *Command) showUsage() {
-	var usage strings.Builder
-
-	// Usage section
-	usage.WriteString("Usage: " + cmd.Name)
-	for optionName, option := range cmd.Options {
-		if optionName != "" && option.Alias != "" {
-			usage.WriteString(" [--" + optionName + "|-" + option.Alias + "]")
-		} else if optionName != "" {
-			usage.WriteString(" [--" + optionName + "]")
-		} else if option.Alias != "" {
-			usage.WriteString(" [-" + option.Alias + "]")
-		} else {
-			continue
-		}
-	}
-	if len(cmd.Commands) > 0 {
-		usage.WriteString(" [")
-		var commandNames []string
-		for _, command := range cmd.Commands {
-			if command.Name == "" {
-				continue
-			}
-			commandNames = append(commandNames, command.Name)
-		}
-		usage.WriteString(strings.Join(commandNames, "|") + "]")
-	}
-
-
-    fmt.Println(usage.String())
-
 }
